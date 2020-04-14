@@ -38,7 +38,6 @@ export class UserController {
          .catch(() => {
             throw new HttpException('User not found!', HttpStatus.NOT_FOUND);    
          })
-        
     }
 
 
@@ -46,13 +45,33 @@ export class UserController {
     @ApiOkResponse({ description: 'the resource has been successfully updated.' })
     @ApiForbiddenResponse({ description: 'Forbidden.' })
     updateUser(@Param('id') id: string, @Body() data: Partial<UserDTO>){
-        return this.userService.update(id, data);
+        return this.userService.update(id, data)
+        .then((result) => {
+            if(result) {
+                return result;
+            } else {
+                throw new HttpException('User not found!', HttpStatus.NOT_FOUND);
+            }
+        })
+         .catch(() => {
+            throw new HttpException('User not found!', HttpStatus.NOT_FOUND);    
+         });
     }
 
     @Delete(':id')
     @ApiOkResponse({ description: 'the resource has been successfully removed.' })
     @ApiForbiddenResponse({ description: 'Forbidden.' })
     deleteUser(@Param('id') id: string){
-        return this.userService.delete(id);
+        return this.userService.delete(id)
+        .then((result) => {
+            if(result) {
+                return result;
+            } else {
+                throw new HttpException('User not found!', HttpStatus.NOT_FOUND);
+            }
+        })
+         .catch(() => {
+            throw new HttpException('User not found!', HttpStatus.NOT_FOUND);    
+         });
     }
 }
