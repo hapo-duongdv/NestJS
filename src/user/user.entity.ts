@@ -7,18 +7,27 @@ import {
 
 @Entity('user')
 export class UserEntity {
-    @PrimaryGeneratedColumn('uuid') 
+    @PrimaryGeneratedColumn() 
     id : string;
 
     @CreateDateColumn() 
     created : Date;
 
-    @Column('text') 
+    @Column({
+        type: 'text',
+        nullable: false
+    }) 
     name : string;
 
-    @Column('text')
+    @Column({
+        type: 'numeric',
+        nullable: false
+    })
     age : number;
 
-    @Column()
-    isMarried: boolean;
+    @Column({
+        type: 'text',
+        nullable: false
+    })
+    address: string;
 }

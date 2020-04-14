@@ -6,6 +6,5 @@
     "password": "08071998",
     "database": "user",
     "entities": ["./src/**/*.entity.js","./dist/**/*.entity.js"],
-    "synchronize": true,
-    "logging" : true
+    "synchronize": true
 }

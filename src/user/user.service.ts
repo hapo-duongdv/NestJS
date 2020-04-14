@@ -26,8 +26,8 @@ export class UserService {
     }
 
     async update(id: string, data: Partial<UserDTO>) {
-        await this.userRepository.update({id}, data);
-        return this.userRepository.findOne({ id });
+        await this.userRepository.findOne({ id });
+        return this.userRepository.update({id}, data);
     }
 
     async delete(id: string) {
