@@ -9,6 +9,7 @@ export class  UserDTO {
     })
     @IsString()
     readonly name :string;
+
     @ApiProperty({
         type: Number,
         description: 'The title of user position',
@@ -16,6 +17,7 @@ export class  UserDTO {
     })
     @IsInt()
     readonly age : number;
+    
     @ApiProperty({
         type: String,
         description: 'The title of user position',

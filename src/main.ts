@@ -10,8 +10,8 @@ const port = process.env.PORT || 8080;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalFilters(new ValidationExceptionFilter());
-  app.useGlobalPipes(new ValidationPipe());
+  // app.useGlobalFilters(new ValidationExceptionFilter());
+  // app.useGlobalPipes(new ValidationPipe());
 
   const options = new DocumentBuilder()
     .setTitle('User Postings API')

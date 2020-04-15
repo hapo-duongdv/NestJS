@@ -1,15 +1,21 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, HttpException, HttpStatus, UseFilters } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, HttpException, HttpStatus, UseFilters, CacheKey, CacheTTL, UseInterceptors, CacheInterceptor } from '@nestjs/common';
 import { UserService } from './user.service'
 import { UserDTO } from './user.dto';
-import { ValidationPipe } from '../pipes/validation.pipe'
+import { ValidationExceptionFilter } from'../filters/validation-exception.filter';
+import { ValidationPipe } from '../pipes/validation.pipe';
+import { User } from '../decorator/userdata.decorator';
 import { ApiTags, ApiOkResponse, ApiForbiddenResponse } from '@nestjs/swagger';
+import { BenchmarkInterceptor } from '../interceptors/benchmark.interceptor'
 
-@ApiTags('users')
+@ApiTags('user')
+@UseInterceptors(CacheInterceptor, BenchmarkInterceptor)
 @Controller('user')
 export class UserController {
     constructor( private readonly userService : UserService){}
     
     @Get()
+    @CacheKey('allUsers')
+    @CacheTTL(15)
     @ApiOkResponse({ description: 'the resource has been successfully returned.' })
     @ApiForbiddenResponse({ description: 'Forbidden.' })
     showAllUsers(){
@@ -17,13 +23,15 @@ export class UserController {
     }
 
     @Post()
+    @UseFilters(new ValidationExceptionFilter() )
     @ApiOkResponse({ description: 'the resource has been successfully created.' })
     @ApiForbiddenResponse({ description: 'Forbidden.' })
-    createUser(@Body(ValidationPipe) data: UserDTO){
+    createUser(@Body(new ValidationPipe()) data: UserDTO){
         return this.userService.create(data);
     }
 
     @Get(':id')
+    @CacheTTL(15)
     @ApiOkResponse({ description: 'the resource has been successfully returned.' })
     @ApiForbiddenResponse({ description: 'Forbidden.' })
     readUser(@Param('id') id: string){
